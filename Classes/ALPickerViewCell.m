@@ -35,6 +35,7 @@
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
   if ((self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier])) {
     selectionState_ = NO;
+    readOnlyState_ = NO;
     self.textLabel.font = [UIFont boldSystemFontOfSize:21];
   }
   return self;
@@ -60,18 +61,70 @@
 - (void)setSelectionState:(BOOL)selectionState {
   selectionState_ = selectionState;
   
-  if (selectionState_ != NO) {
-    self.imageView.image = [UIImage imageNamed:@"check"];
-    self.imageView.highlightedImage = [UIImage imageNamed:@"check_selected"];
-    self.textLabel.textColor = [UIColor colorWithRed:33/256. green:80/256. blue:134/256. alpha:1];
+  if (readOnlyState_) {
+    if (selectionState_) {
+      self.imageView.image = [UIImage imageNamed:@"check_disabled"];
+      self.imageView.highlightedImage = [UIImage imageNamed:@"check_selected"];
+    }
+    else {
+      self.imageView.image = nil;
+      self.imageView.highlightedImage = nil;
+    }
+    self.textLabel.textColor = [UIColor colorWithRed:153/256. green:153/256. blue:153/256. alpha:1];
   }
   else {
-    self.imageView.image = nil;
-    self.imageView.highlightedImage = nil;
-    self.textLabel.textColor = [UIColor blackColor];
+    if (selectionState_) {
+      self.imageView.image = [UIImage imageNamed:@"check"];
+      self.imageView.highlightedImage = [UIImage imageNamed:@"check_selected"];
+      self.textLabel.textColor = [UIColor colorWithRed:33/256. green:80/256. blue:134/256. alpha:1];
+    }
+    else {
+      self.imageView.image = nil;
+      self.imageView.highlightedImage = nil;
+      self.textLabel.textColor = [UIColor blackColor];
+    }
   }
   
   [self.imageView setNeedsDisplay];
+  [self.textLabel setNeedsDisplay];
+  [self setNeedsLayout];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)readOnlyState {
+    return readOnlyState_;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setReadOnlyState:(BOOL)readOnlyState {
+  readOnlyState_ = readOnlyState;
+  
+  if (readOnlyState_) {
+    if (selectionState_) {
+      self.imageView.image = [UIImage imageNamed:@"check_disabled"];
+      self.imageView.highlightedImage = [UIImage imageNamed:@"check_selected"];
+    }
+    else {
+      self.imageView.image = nil;
+      self.imageView.highlightedImage = nil;
+    }
+    self.textLabel.textColor = [UIColor colorWithRed:153/256. green:153/256. blue:153/256. alpha:1];
+  }
+  else {
+    if (selectionState_) {
+      self.imageView.image = [UIImage imageNamed:@"check"];
+      self.imageView.highlightedImage = [UIImage imageNamed:@"check_selected"];
+      self.textLabel.textColor = [UIColor colorWithRed:33/256. green:80/256. blue:134/256. alpha:1];
+    }
+    else {
+      self.imageView.image = nil;
+      self.imageView.highlightedImage = nil;
+      self.textLabel.textColor = [UIColor blackColor];
+    }
+  }
+  
   [self.textLabel setNeedsDisplay];
   [self setNeedsLayout];
 }

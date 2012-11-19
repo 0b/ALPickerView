@@ -60,6 +60,8 @@
 - (NSString *)pickerView:(ALPickerView *)pickerView textForRow:(NSInteger)row;
 // Return a boolean selection state on the given row
 - (BOOL)pickerView:(ALPickerView *)pickerView selectionStateForRow:(NSInteger)row;
+// Return a boolean enabled state on the given row
+- (BOOL)pickerView:(ALPickerView *)pickerView readOnlyStateForRow:(NSInteger)row;
 
 @optional
 

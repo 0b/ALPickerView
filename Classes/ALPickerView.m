@@ -139,13 +139,18 @@
         }
       }
       cell.selectionState = allSelected;
+      cell.readOnlyState = NO;
     }
     else {
       int actualRow = indexPath.row - (allOptionTitle ? 3 : 2);
       cell.textLabel.text = [delegate_ pickerView:self textForRow:actualRow];
       cell.selectionState = [delegate_ pickerView:self selectionStateForRow:actualRow];
+      cell.readOnlyState = [delegate_ pickerView:self readOnlyStateForRow:actualRow];
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    if (cell.readOnlyState)
+      cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    else
+      cell.selectionStyle = UITableViewCellSelectionStyleBlue;
   }
   
   return cell;
@@ -197,6 +202,19 @@
   }
   
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  ALPickerViewCell *cell = (ALPickerViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+  int actualRow = indexPath.row - (allOptionTitle ? 3 : 2);
+  if (!cell.readOnlyState || (allOptionTitle && actualRow == -1)) {
+    return indexPath;
+  }
+  else {
+    return nil;
+  }
 }
 
 

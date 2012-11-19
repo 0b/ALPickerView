@@ -31,10 +31,12 @@
 
 @interface ALPickerViewCell : UITableViewCell {
 @private
-  BOOL selectionState_;
+    BOOL selectionState_;
+    BOOL readOnlyState_;
 }
 
 @property (nonatomic, assign) BOOL selectionState;
+@property (nonatomic, assign) BOOL readOnlyState;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
