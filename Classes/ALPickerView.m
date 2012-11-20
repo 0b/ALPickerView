@@ -145,7 +145,9 @@
       int actualRow = indexPath.row - (allOptionTitle ? 3 : 2);
       cell.textLabel.text = [delegate_ pickerView:self textForRow:actualRow];
       cell.selectionState = [delegate_ pickerView:self selectionStateForRow:actualRow];
-      cell.readOnlyState = [delegate_ pickerView:self readOnlyStateForRow:actualRow];
+      if (delegate_ && [delegate_ respondsToSelector:@selector(pickerView:readOnlyStateForRow:)]) {
+        cell.readOnlyState = [delegate_ pickerView:self readOnlyStateForRow:actualRow];
+      }
     }
     if (cell.readOnlyState)
       cell.selectionStyle = UITableViewCellSelectionStyleNone;
